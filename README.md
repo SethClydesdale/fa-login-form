@@ -4,7 +4,7 @@ This is a small HTML page add-on for Forumotoin that serves as a replacement for
 
 If you would like to install this form, follow the instructions in this topic :
 
-
+http://fmdesign.forumotion.com/t420-multi-step-login-form#3371
 
 You can also find a demo below.
 
