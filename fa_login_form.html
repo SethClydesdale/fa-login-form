@@ -291,9 +291,11 @@ body { overflow:hidden; }
               
               for (i in accounts) accounts[i].last_active = 0;
               
-              accounts[id] = {};
-              accounts[id].last_active = 1; /* last active account will be marked with a 1 */
-              accounts[id].username = document.getElementById('fa_login_username').value;
+              accounts[id] = {
+                last_active : 1, /* last active account will be marked with a 1 */
+                username : document.getElementById('fa_login_username').value
+              };
+              
               storage.fa_accounts = JSON.stringify(accounts);
             }
             
