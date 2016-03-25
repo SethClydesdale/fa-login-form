@@ -1,0 +1,433 @@
+<!--
+DEVELOPED BY ANGE TUTEUR
+NO DISTRIBUTION WITHOUT CONSENT OF THE AUTHOR
+ORIGIN : http://fmdesign.forumotion.com/
+-->
+
+<style type="text/css">/* CONTAINERS AND GENERAL SETUP */
+body { overflow:hidden; }
+#fa_form_container { color:#666; font-size:12px; font-family:Arial, sans-serif; background:#FFF; position:fixed; top:0; left:0; right:0; bottom:0; z-index:999999; overflow:auto; }
+#fa_form_container a { color:#69C !important; }
+#fa_form_container a:hover { color:#369 !important; }
+.fa_login_maintitle { font-size:24px; font-weight:bold; text-align:center; text-transform:uppercase; margin:20px 0; }
+.fa_login_maintitle img { vertical-align:-5px; height:30px; margin-right:6px; }
+.fa_login_title { text-align:center; margin:30px 0; color:#666; font-size:28px; font-weight:bold; font-family:Arial, sans-serif; }
+.fa_login_desc { font-size:16px; text-align:center; margin:10px 0; }
+.fa_form_wrap { text-align:center; background:#EEE; border:1px solid #DDD; box-shadow:0 6px 12px rgba(0, 0, 0, 0.1); border-radius:3px; padding:30px 6px; width:300px; margin:30px auto; overflow:hidden; position:relative; transition:250ms; }
+.fa_login_row { margin:10px 0; }
+.fa_form_links { text-align:center; }
+.fa_login_origin { font-size:12px; position:fixed; bottom:10px; right:10px; z-index:-1; }
+.fa_login_origin a { font-weight:bold; }
+
+/* AVATAR AND USERNAME */
+.fa_login_avatar { background:#FFF; border:1px solid #DDD; border-radius:100px; padding:2px; display:inline-block; width:100px; height:100px; overflow:hidden; position:relative; }
+.fa_login_avatar img { height:100px; width:100px; border-radius:100px; }
+#fa_avatar_real { background:#FFF; position:absolute; top:50px; left:50px; right:2px; bottom:2px; height:0; width:0; transition:linear 150ms; }
+#fa_avatar_real.avatar_visible { top:2px; left:2px; height:100px; width:100px; }
+.fa_login_username { font-size:16px; font-weight:bold; }
+
+/* BUTTONS AND INPUTS */
+.fa_login_button { color:#69C; background:none; border:1px solid #69C; border-radius:3px; font-size:16px; font-weight:bold; font-family:Arial, sans-serif; display:block; height:30px; line-height:30px; width:240px; margin:10px auto; transition:250ms; outline:none; cursor:pointer; }
+.fa_login_button:hover { color:#FFF; background:#69C; }
+.fa_login_input { color:#666; background:#FFF; border:1px solid #CCC; border-radius:3px; padding: 0 3px; height:30px; width: 232px; outline:none; }
+.fa_login_input:focus { border-color:#69C; }
+
+/* FORM SLIDES AND BACK BUTTON */
+.fa_form_slide { position:absolute; width:100%; transition:300ms; }
+#fa_login_back { position:absolute; top:30px; left:40px; opacity:0; visibility:hidden; transition:250ms; }
+#fa_login_back.fa_login_visible { opacity:1; visibility:visible; }
+
+
+/* ACCOUNT LIST */
+#account_list { background:#EEE; position:absolute; top:0; left:0; width:100%; height:100%; overflow:auto; }
+.account_list_row { font-size:16px; text-align:left; width:80%; margin:10px auto; position:relative; }
+.account_list_inner { background:#FFF; border:1px solid #DDD; border-radius:3px; padding:3px; width:80%; cursor:pointer; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.account_list_inner:hover { background:#FFD }
+.account_list_avatar { height:40px; width:40px; vertical-align:middle; margin-right:3px; }
+#fa_form_container a.account_list_delete { font-size:30px; color:#F33 !important; background:#FFF; border:1px solid #F33; border-radius:100px; width:20px; height:20px; line-height:22px; text-align:center; position:absolute; margin-top:-10px; top:50%; right:0; display:block; overflow:hidden; }
+#fa_form_container a.account_list_delete:hover { color:#333 !important; border-color:#333; }
+
+/* HIDE FIELDS */
+.logged_out #fa_form_logout, .logged_in #fa_form_login, .noscript #fa_form_login, .noscript #fa_form_logout, #account_list.accounts_hidden { display:none }</style>
+
+<div id="fa_form_container" class="logged_out noscript">
+  <h1 class="fa_login_maintitle"><a href="http://www.forumotion.com" target="_blank"><img src="http://im0.all-up.com/static/images/sigle.png"/><span style="color:#39C;">Forum</span><span style="color:#333;">otion.com</span></a></h1>
+
+  <!-- START_NOSCRIPT_LOGIN_FORM -->
+  <noscript>
+    <form action="/login" method="post">
+      <h2 class="fa_login_title">Log in</h2>
+      <p class="fa_login_desc">Please log in to gain full access to this forum</p>
+      <div class="fa_form_wrap">
+        <div class="fa_login_row">
+          <input id="fa_login_username" class="fa_login_input" type="text" name="username" placeholder="Enter your username"/>
+        </div>
+        
+        <div class="fa_login_row">
+          <input id="fa_login_password" class="fa_login_input" type="password" name="password" placeholder="Password"/>
+        </div>
+        
+        <div class="fa_login_row">
+          <input class="fa_login_button" type="submit" name="login" value="Log in"/>
+            
+          <div style="width:240px;margin:auto;">
+            <div style="float:left;">
+              <label for="fa_autologin"><input id="fa_autologin" type="checkbox" name="autologin"/> Log in automatically</label>
+            </div>
+              
+            <div style="float:right;">
+              <a href="/profile?mode=sendpassword">Forget password?</a>
+            </div>
+              
+            <div class="clear"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="fa_form_links">
+        <div class="fa_login_row">
+          <a href="/register">Create account</a>
+        </div>
+        <div class="fa_login_row">
+          <a href="/login#login_classic">Classic login</a> | <a href="/login?logout=true#login_classic">Classic logout</a>
+        </div>
+      </div>
+    </form>
+  </noscript>
+  <!-- END_NOSCRIPT_LOGIN_FORM -->
+
+  <!-- START_LOGIN_FORM -->
+  <form id="fa_form_login" action="/login" method="post">
+    <h2 class="fa_login_title">Log in</h2>
+    <p class="fa_login_desc">Please log in to gain full access to <script type="text/javascript">document.write('<a href="http://' + window.location.host + '">' + window.location.host + '</a>');</script></p>
+      <div id="fa_form_wrap" class="fa_form_wrap" style="height:210px;">
+        <div class="fa_login_row">
+          <a id="fa_login_back" href="#">Back</a>
+          <span class="fa_login_avatar">
+            <img src="http://illiweb.com/fa/invision/pp-blank-thumb.png"/>
+            <img id="fa_avatar_real" src="http://illiweb.com/fa/invision/pp-blank-thumb.png"/>
+          </span>
+        </div>
+        
+        <!-- START_STEP_1 -->
+        <div id="login_step_1" class="fa_form_slide" style="left:0px;">
+          <div class="fa_login_row">
+            <input id="fa_login_username" class="fa_login_input" type="text" name="username" placeholder="Enter your username"/>
+            <p id="fa_error_username" class="fa_login_row" style="color:#F00;display:none;">Please enter your username.</p>
+          </div>
+        
+          <div class="fa_login_row">
+            <input id="fa_button_next" class="fa_login_button" type="button" value="Next"/>
+          </div>
+        </div>
+        <!-- END_STEP_1 -->
+        
+        <!-- START_STEP_2 -->
+        <div id="login_step_2" class="fa_form_slide" style="left:400px;">
+          <div class="fa_login_row">
+            <span class="fa_login_username"></span>
+          </div>
+        
+          <div class="fa_login_row">
+            <input id="fa_login_password" class="fa_login_input" type="password" name="password" placeholder="Password"/>
+            <p id="fa_error_password" class="fa_login_row" style="color:#F00;width:240px;margin:10px auto;display:none;">You have specified an invalid username or password.</p>
+          </div>
+        
+          <div class="fa_login_row">
+            <input class="fa_login_button" type="submit" name="login" value="Log in"/>
+            
+            <div style="width:240px;margin:auto;">
+              <div style="float:left;">
+                <label for="fa_autologin"><input id="fa_autologin" type="checkbox" name="autologin"/> Log in automatically</label>
+              </div>
+              
+              <div style="float:right;">
+                <a href="/profile?mode=sendpassword">Forget password?</a>
+              </div>
+              
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>
+        <!-- END_STEP_1 -->
+      </div>
+      
+      <div class="fa_form_links">
+        <div id="account_list_holder" class="fa_login_row"></div>
+        <div class="fa_login_row">
+          <a href="/register">Create account</a>
+        </div>
+        <div class="fa_login_row">
+          <a href="/login#login_classic">Classic log in</a>
+        </div>
+      </div>
+  </form>
+  <!-- END_LOGIN_FORM -->
+
+  <!-- START_LOGOUT_FORM -->
+  <form id="fa_form_logout" action="/login?logout=true" method="post">
+    <h2 class="fa_login_title">Log out</h2>
+    <p class="fa_login_desc">You're about to log out of <script type="text/javascript">document.write('<a href="http://' + window.location.host + '">' + window.location.host + '</a>');</script></p>
+      <div class="fa_form_wrap">
+        <div class="fa_login_row">
+          <span class="fa_login_avatar"><script type="text/javascript">document.write(_userdata.avatar);</script></span>
+        </div>
+        
+        <div class="fa_login_row">
+          <span class="fa_login_username"><script type="text/javascript">document.write('<a href="/u' + _userdata.user_id + '" target="_blank">' + _userdata.username + '</a>');</script></span>
+        </div>
+        
+        <div class="fa_login_row">Are you sure you want to log out ?</div>
+        <div class="fa_login_row">
+          <input class="fa_login_button" type="submit" name="confirm" value="Yes"/>
+          <input class="fa_login_button" type="submit" name="cancel" value="No"/>
+          <script type="text/javascript">//<![CDATA[
+          _userdata.session_logged_in && (function() {
+            var logout = document.getElementById('logout'),
+                container = document.getElementById('fa_form_container'),
+                form_logout = document.getElementById('fa_form_logout');
+                  
+            document.title = 'Log out';
+            container.className = 'logged_in';
+            
+            /* if the default login link is present we can get the data from the href attribute. ( FASTER )
+            ** otherwise we'll need to send an AJAX request to the login page for the data ( SLOWER ) */
+            if (logout) {
+              var tid = logout.href.replace(/.*?tid=(.*?)&.*/, '$1'),
+                  key = logout.href.replace(/.*?key=(.*?)$/, '$1');
+                    
+              form_logout.action += '&tid=' + tid;
+              document.write('<input type="hidden" name="tid" value="' + tid + '"><input type="hidden" name="key" value="' + key + '">');
+            } else {
+              $.get('/login?logout=true&change_version=prosilver', function(d) {
+                var info = $('.submit-buttons', d)[0];
+                if (info) {
+                  info.style.display = 'none';
+                  form_logout.appendChild(info);
+                  form_logout.action += '&tid=' + form_logout.tid.value;
+                }
+              });
+            }
+          }());
+          //]]></script>
+        </div>
+      </div>
+    </form>
+    <!-- END_LOGOUT_FORM -->
+    
+    <div class="fa_login_origin">Log in form developed by Ange Tuteur. <a href="http://fmdesign.forumotion.com/t412-multi-step-login-manager-beta-test">Get the code !</a></div>
+</div>
+
+<script type="text/javascript">//<![CDATA[
+!_userdata.session_logged_in && (function() {
+  document.title = 'Log in';
+
+  window.fa_form_login = {
+    redirect : '/forum', /* change redirection page after login */
+    submitting : false, /* true if posting login info */
+    
+    accountList : document.createElement('DIV'), /* stores logged accounts */
+  
+    /* move onto the password step */
+    next : function() {
+      var username = document.getElementById('fa_login_username');
+      
+      if (username.value) {
+        var avatar = document.getElementById('fa_avatar_real');
+        fa_form_login.clearError('username');
+        
+        $.get('/profile?mode=viewprofile&u=' + username.value, function(d) {
+          var ava = $('#profile-advanced-right .module:first div img:first,.forumline td.row1.gensmall:first > img:first, .frm-set.profile-view.left dd img,dl.left-box.details:first dd img, .row1 b .gen:first img, .real_avatar img', d)[0];
+          avatar.src = ava ? ava.src : 'http://illiweb.com/fa/invision/pp-blank-thumb.png';
+          avatar.className = 'avatar_visible';
+        });
+      
+        $('.fa_login_username').html('<a href="/profile?mode=viewprofile&u=' + username.value + '" target="_blank">' + username.value + '</a>');
+        
+        document.getElementById('fa_form_wrap').style.height = '260px';
+        document.getElementById('login_step_1').style.left = '-400px';
+        document.getElementById('login_step_2').style.left = '0px';
+        document.getElementById('fa_login_back').className = 'fa_login_visible';
+        
+        window.setTimeout(function() {
+          document.getElementById('fa_login_password').focus();
+        }, 300);
+      } else {
+        fa_form_login.error('username');
+      }
+    },
+    
+    /* move back to the username step */
+    back : function() {
+      fa_form_login.clearError('password');
+      
+      document.getElementById('fa_login_username').focus();
+      document.getElementById('fa_avatar_real').className = '';
+      
+      document.getElementById('fa_form_wrap').style.height = '210px';
+      document.getElementById('login_step_1').style.left = '0px';
+      document.getElementById('login_step_2').style.left = '400px';
+      document.getElementById('fa_login_back').className = '';
+      return false;
+    },
+    
+    /* submit the login form */
+    submit : function() {
+      if (!fa_form_login.submitting) {
+        fa_form_login.submitting = true;
+        
+        document.getElementById('fa_form_wrap').style.height = '260px';
+        fa_form_login.clearError('password');
+        
+        $.post('/login', $('#fa_form_login').serialize() + '&login=true', function(d) {
+          fa_form_login.submitting = false;
+          if (/_userdata\["session_logged_in"\] = 1/.test(d)) {
+            var storage = window.localStorage,
+                id = d.match(/_userdata\["user_id"\] = (\d+)/)[1];
+            
+            /* store the user_id and username for next login */
+            if (storage && window.JSON) {
+              var accounts = storage.fa_accounts ? JSON.parse(storage.fa_accounts) : {}, i;
+              
+              for (i in accounts) accounts[i].last_active = 0;
+              
+              accounts[id] = {};
+              accounts[id].last_active = 1; /* last active account will be marked with a 1 */
+              accounts[id].username = document.getElementById('fa_login_username').value;
+              storage.fa_accounts = JSON.stringify(accounts);
+            }
+            
+            window.location.href = fa_form_login.redirect;
+          } else {
+            fa_form_login.error('password');
+          }
+        });
+      }
+      return false;
+    },
+    
+    /* throw a form error and display the error text */
+    error : function(type) {
+      var error = document.getElementById('fa_error_' + type),
+          wrap = document.getElementById('fa_form_wrap');
+      
+      if (/none/.test(error.style.display)) {
+        document.getElementById('fa_login_' + type).style.borderColor = '#F00';
+      
+        error.style.display = 'block';
+        wrap.style.height = +wrap.style.height.replace(/px/, '') + error.getBoundingClientRect().height + 'px';
+      }
+    },
+    
+    /* clear the specified error */
+    clearError : function(type) {
+      document.getElementById('fa_error_' + type).style.display = 'none';
+      document.getElementById('fa_login_' + type).style.borderColor = '';
+    },
+    
+    /* delete a profile from the account list */
+    deleteProfile : function(id) {
+      var storage = window.localStorage, accounts = JSON.parse(storage.fa_accounts),
+          row = document.getElementById('account_user_' + id),
+          i;
+
+      delete accounts[id];
+      for (i in accounts) {
+        accounts[i].last_active = 1;
+        break;
+      }
+      storage.fa_accounts = JSON.stringify(accounts);
+      
+      row.parentNode.removeChild(row);
+      if (!fa_form_login.accountList.firstChild) fa_form_login.accountList.innerHTML = '<div class="fa_login_row">There are no saved accounts.</div><div class="fa_login_row"><a href="javascript:fa_form_login.toggleAccounts();">Return to login</a></div>';
+    },
+    
+    /* create the profile rows based onto the accounts you logged into */
+    createProfile : function(id, o) {
+      var row = document.createElement('DIV');
+      row.id = 'account_user_' + id;
+      row.className = 'account_list_row';
+      row.innerHTML = '<div class="account_list_inner"><img class="account_list_avatar" src="http://illiweb.com/fa/invision/pp-blank-thumb.png"/> <span class="account_list_username">' + o.username + '</span></div><a class="account_list_delete" title="Remove account" href="javascript:fa_form_login.deleteProfile(\'' + id + '\');">X</a>';
+      row.firstChild.onclick = function() {
+        fa_form_login.toggleAccounts();
+        document.getElementById('fa_login_username').value = $('.account_list_username', this).text();
+        fa_form_login.next();
+      };
+      
+      $.get('/ajax/index.php?f=m&user_id=' + id, function(d) {
+        var ava = $('.tooltip-content img', d)[0];
+        if (ava) row.getElementsByTagName('IMG')[0].src = ava.src;
+      });
+      
+      fa_form_login.accountList.appendChild(row);
+    },
+    
+    /* basic setup of the account list */
+    initAccountList : function() {
+      var a = document.createElement('A'),
+          holder = document.getElementById('account_list_holder');
+      
+      a.href = '#';
+      a.innerHTML = 'Choose another account';
+      a.onclick = fa_form_login.toggleAccounts;
+      
+      fa_form_login.accountList.id = 'account_list';
+      fa_form_login.accountList.className = 'accounts_hidden';
+      
+      document.getElementById('fa_form_wrap').appendChild(fa_form_login.accountList);
+      holder.appendChild(a);
+    },
+    
+    /* toggle display of the account list */
+    toggleAccounts : function() {
+      if (/accounts_hidden/.test(fa_form_login.accountList.className)) {
+        fa_form_login.accountList.className = '';
+        document.getElementById('account_list_holder').firstChild.innerHTML = 'Return to log in';
+      } else {
+        fa_form_login.accountList.className = 'accounts_hidden';
+        document.getElementById('account_list_holder').firstChild.innerHTML = 'Choose another account';
+      }
+      
+      if (!fa_form_login.accountList.firstChild) fa_form_login.accountList.innerHTML = '<div class="fa_login_row">There are no saved accounts.</div><div class="fa_login_row"><a href="javascript:fa_form_login.toggleAccounts();">Return to log in</a></div>';
+      return false;
+    }
+  };
+  
+  var container = document.getElementById('fa_form_container'),
+      username = document.getElementById('fa_login_username'),
+      storage = window.localStorage;
+  
+  container.className = 'logged_out';
+  
+  /* move forward in the form when ENTER is pressed */
+  username.onkeydown = function(e) {
+    if (e.keyCode && e.keyCode == 13) {
+      fa_form_login.next();
+      return false;
+    }
+  };
+    
+  /* if the specified data is useable we'll go through the stored accounts in localStorage and form a list for switching */
+  if (storage && storage.fa_accounts && window.JSON) {
+    var accounts = JSON.parse(storage.fa_accounts),
+        i, last_active = false;
+    
+    for (i in accounts) {
+      if (accounts[i].last_active) {
+        last_active = true;
+        username.value = accounts[i].username;
+        fa_form_login.next();
+      }
+        
+      fa_form_login.createProfile(i, accounts[i]);
+    }
+    
+    fa_form_login.initAccountList();
+    !last_active && username.focus();
+  } else username.focus();
+  
+  document.getElementById('fa_button_next').onclick = fa_form_login.next;
+  document.getElementById('fa_login_back').onclick = fa_form_login.back;
+  document.getElementById('fa_form_login').onsubmit = fa_form_login.submit;
+}());
+//]]></script>
