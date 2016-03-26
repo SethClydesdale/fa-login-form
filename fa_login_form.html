@@ -245,7 +245,7 @@ body { overflow:hidden; }
         if (!id && storage && storage.fa_accounts && window.JSON) {
           accounts = JSON.parse(storage.fa_accounts);
           for (i in accounts) {
-            if (username.value == accounts[i].username) {
+            if (username.value.toLowerCase() == accounts[i].username.toLowerCase()) {
               id = i;
               break;
             }
