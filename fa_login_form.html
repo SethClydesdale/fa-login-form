@@ -235,8 +235,7 @@ body { overflow:hidden; }
       
       if (username.value) {
         var avatar = document.getElementById('fa_avatar_real'),
-            row = id ? null : document.getElementById('account_user_' + id),
-            accounts, i;
+            row, accounts, i;
         
         
         fa_form_login.clearError('username');
@@ -252,6 +251,8 @@ body { overflow:hidden; }
             }
           }
         }
+        
+        row = id ? null : document.getElementById('account_user_' + id);
         
         // check if account row is created to get an avatar that's already loaded
         if (row) avatar.src = row.getElementsByTagName('IMG')[0].src;
