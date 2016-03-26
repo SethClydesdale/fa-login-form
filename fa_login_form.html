@@ -450,7 +450,9 @@ body { overflow:hidden; }
     !last_active && username.focus();
   } else username.focus();
   
-  document.getElementById('fa_button_next').onclick = fa_form_login.next;
+  document.getElementById('fa_button_next').onclick = function() {
+    fa_form_login.next();
+  };
   document.getElementById('fa_login_back').onclick = fa_form_login.back;
   document.getElementById('fa_form_login').onsubmit = fa_form_login.submit;
 }());
