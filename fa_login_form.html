@@ -228,19 +228,40 @@ body { overflow:hidden; }
     
     accountList : document.createElement('DIV'), /* stores logged accounts */
   
-    /* move onto the password step */
-    next : function() {
+    /* move onto the password step
+       pass along the user id to get the user avatar faster */
+    next : function(id) {
       var username = document.getElementById('fa_login_username');
       
       if (username.value) {
-        var avatar = document.getElementById('fa_avatar_real');
-        fa_form_login.clearError('username');
+        var avatar = document.getElementById('fa_avatar_real'),
+            row = id ? null : document.getElementById('account_user_' + id),
+            accounts, i;
         
-        $.get('/profile?mode=viewprofile&u=' + username.value, function(d) {
-          var ava = $('#profile-advanced-right .module:first div img:first,.forumline td.row1.gensmall:first > img:first, .frm-set.profile-view.left dd img,dl.left-box.details:first dd img, .row1 b .gen:first img, .real_avatar img', d)[0];
-          avatar.src = ava ? ava.src : 'http://illiweb.com/fa/invision/pp-blank-thumb.png';
-          avatar.className = 'avatar_visible';
-        });
+        
+        fa_form_login.clearError('username');
+        username.value = username.value.replace(/^\s+|\s+$/g, ''); // trim extra white space
+        
+        // check if the username is already stored
+        if (!id && storage && storage.fa_accounts && window.JSON) {
+          accounts = JSON.parse(storage.fa_accounts);
+          for (i in accounts) {
+            if (username.value == accounts[i].username) {
+              id = i;
+              break;
+            }
+          }
+        }
+        
+        // check if account row is created to get an avatar that's already loaded
+        if (row) avatar.src = row.getElementsByTagName('IMG')[0].src;
+        else {
+          $.get(id ? '/ajax/index.php?f=m&user_id=' + id : '/profile?mode=viewprofile&u=' + username.value, function(d) {
+            var ava = id ? $('.tooltip-content img', d)[0] : $('#profile-advanced-right .module:first div img:first,.forumline td.row1.gensmall:first > img:first, .frm-set.profile-view.left dd img,dl.left-box.details:first dd img, .row1 b .gen:first img, .real_avatar img', d)[0];
+            avatar.src = ava ? ava.src : 'http://illiweb.com/fa/invision/pp-blank-thumb.png';
+            avatar.className = 'avatar_visible';
+          });
+        }
       
         $('.fa_login_username').html('<a href="/profile?mode=viewprofile&u=' + username.value + '" target="_blank">' + username.value + '</a>');
         
@@ -353,7 +374,7 @@ body { overflow:hidden; }
       row.firstChild.onclick = function() {
         fa_form_login.toggleAccounts();
         document.getElementById('fa_login_username').value = $('.account_list_username', this).text();
-        fa_form_login.next();
+        fa_form_login.next(this.parentNode.id.slice(13));
       };
       
       $.get('/ajax/index.php?f=m&user_id=' + id, function(d) {
@@ -418,7 +439,7 @@ body { overflow:hidden; }
       if (accounts[i].last_active) {
         last_active = true;
         username.value = accounts[i].username;
-        fa_form_login.next();
+        fa_form_login.next(i);
       }
         
       fa_form_login.createProfile(i, accounts[i]);
