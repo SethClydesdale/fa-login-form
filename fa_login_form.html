@@ -149,7 +149,7 @@ body { overflow:hidden; }
             </div>
           </div>
         </div>
-        <!-- END_STEP_1 -->
+        <!-- END_STEP_2 -->
       </div>
       
       <div class="fa_form_links">
@@ -223,7 +223,7 @@ body { overflow:hidden; }
   document.title = 'Log in';
 
   window.fa_form_login = {
-    redirect : '/forum', /* change redirection page after login */
+    redirect : my_getcookie('fa_login_form_redirect') || '/forum', /* change redirection page after login */
     submitting : false, /* true if posting login info */
     
     accountList : document.createElement('DIV'), /* stores logged accounts */
@@ -321,6 +321,7 @@ body { overflow:hidden; }
               storage.fa_accounts = JSON.stringify(accounts);
             }
             
+            my_setcookie('fa_login_form_redirect', '');
             window.location.href = fa_form_login.redirect;
           } else {
             fa_form_login.error('password');
