@@ -3,9 +3,6 @@
       link_change = true,
       redirect = true;
  
-  // redirect
-  if (redirect && /\/login/.test(window.location.href) && !/login_classic/.test(window.location.hash)) window.location.href = html_page;
- 
   $(function() {
     var regex = new RegExp(html_page);
    
@@ -24,5 +21,11 @@
   // saves redirect location so you're taken to the correct page upon login
   if (/\/login\?redirect/.test(window.location.href)) {
     my_setcookie('fa_login_form_redirect', window.location.search.replace(/.*?redirect=(.*?)(?:&|$)/, '$1'));
+  }
+
+  // redirect
+  if (redirect && /\/login/.test(window.location.href)) {
+    if (/login_classic/.test(window.location.hash) || /admin=1/.test(window.location.href)) return;
+    window.location.href = html_page;
   }
 }());
